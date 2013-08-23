@@ -100,32 +100,44 @@ function multiTouchHandler(type) {
                 for (var i = 0; i<e.changedTouches.length; i++){ var t=e.changedTouches[i]; 
                     o._eventHandler(t.identifier, 0, t.clientX, t.clientY, e);
                 }
-            });
+                e.preventDefault();
+                return false;
+            }, false);
             document.addEventListener('touchmove', function(e) {
                 for (var i = 0; i<e.changedTouches.length; i++){ var t=e.changedTouches[i]; 
                     o._eventHandler(t.identifier, 1, t.clientX, t.clientY, e);
                 }
-            });
+                e.preventDefault();
+                return false;
+            }, false);
             document.addEventListener('touchend', function(e) {
                 for (var i = 0; i<e.changedTouches.length; i++){ var t=e.changedTouches[i]; 
                     o._eventHandler(t.identifier, 2, -1, -1, e);
                 }
-            });
+                e.preventDefault();
+                return false;
+            }, false);
             document.addEventListener('MSPointerDown', function(e) {
                 if(!o.touchOnly || (e.pointerType == e.MSPOINTER_TYPE_TOUCH)) {
                     o._eventHandler(e.pointerId, 0, e.pageX, e.pageY, e);
                 }
-            });
+                e.preventDefault();
+                return false;
+            }, false);
             document.addEventListener('MSPointerMove', function(e) {
                 if(!o.touchOnly || (e.pointerType == e.MSPOINTER_TYPE_TOUCH)) {
                     o._eventHandler(e.pointerId, 1, e.pageX, e.pageY, e);
                 }
-            });
+                e.preventDefault();
+                return false;
+            }, false);
             document.addEventListener('MSPointerUp', function(e) {
                 if(!o.touchOnly || (e.pointerType == e.MSPOINTER_TYPE_TOUCH)) {
                     o._eventHandler(e.pointerId, 2, -1, -1, e);
                 }
-            });
+                e.preventDefault();
+                return false;
+            }, false);
         }
     };
 };

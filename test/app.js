@@ -1,5 +1,11 @@
 var mth = new multiTouchHandler();
 var isShown = [0,0,0,0,0,0,0,0,0,0];
+var isDebug = 0;
+
+if (window.location.hash == "#debug")
+{
+    isDebug = 1;
+}
 
 $(document).ready(function() {
     mth.initialize(); 
@@ -8,8 +14,10 @@ $(document).ready(function() {
         for (var i = 0 ; i < 10; i++) {
             if (i < touches.length) {
                 var t = touches[i];
-                h = "@" + t.x + "," + t.y + " (" + t.id + ")";
-                $("#touch" + i).html(h);
+                if (isDebug) {
+                    h = "@" + t.x + "," + t.y + " (" + t.id + ")";
+                    $("#touch" + i).html(h);
+                }
 
                 $("#ts" + i).css({left: t.x, top: t.y});
                 if (!isShown[i]) {
@@ -18,7 +26,9 @@ $(document).ready(function() {
                 }
             }  else  {
                 if (isShown[i]) {
-                    $("#touch" + i).html("");
+                    if (isDebug) {
+                        $("#touch" + i).html("");
+                    }
                     $("#ts" + i).hide();
                     isShown[i] = 0;
                 }
@@ -28,4 +38,8 @@ $(document).ready(function() {
     mth.bind("start", f);
     mth.bind("move", f);
     mth.bind("end", f);
+    
+    if (!isDebug) {
+        $("#status").hide();
+    }
 });
