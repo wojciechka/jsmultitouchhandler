@@ -3,6 +3,7 @@ function multiTouchHandler(type) {
     this._uniqueId = 0;
     this.touches = [];
     this.initialized = 0;
+    this.touchOnly = true;
 
     this.onChanged = function() {};
     this._events = {"start": [], "move": [], "end": []};
@@ -48,17 +49,17 @@ function multiTouchHandler(type) {
             to = new Object();
             to.x = x;
             to.y = y;
-            to.id = id;
-            to.uid = uid;
+            to.internalId = id;
+            to.id = uid;
             this.touches[this.touches.length] = to;
             changed = 1;
             type = "start";
         } else if (type === 1) {
             // move
             for (var i = 0 ; i < this.touches.length ; i++) {
-                if (this.touches[i].id === id)
+                if (this.touches[i].internalId === id)
                 {
-                    uid = this.touches[i].uid;
+                    uid = this.touches[i].id;
                     this.touches[i].x = x;
                     changed = 1;
                     this.touches[i].y = y;
@@ -69,9 +70,9 @@ function multiTouchHandler(type) {
             // end
             newTouches = [];
             for (var i = 0 ; i < this.touches.length ; i++) {
-                if (this.touches[i].id === id)
+                if (this.touches[i].internalId === id)
                 {
-                    uid = this.touches[i].uid;
+                    uid = this.touches[i].id;
                     changed = 1;
                 }
                 else
@@ -86,7 +87,7 @@ function multiTouchHandler(type) {
         // try the constructor; fall back to init otherwise
         if (changed) {
             eventDetail = new Object();
-            eventDetail.uid = uid;
+            eventDetail.id = uid;
             eventDetail.type = type;
             this._call(type, eventDetail);
         }
@@ -111,13 +112,19 @@ function multiTouchHandler(type) {
                 }
             });
             document.addEventListener('MSPointerDown', function(e) {
-                o._eventHandler(e.pointerId, 0, e.pageX, e.pageY, e);
+                if(!o.touchOnly || (e.pointerType == e.MSPOINTER_TYPE_TOUCH)) {
+                    o._eventHandler(e.pointerId, 0, e.pageX, e.pageY, e);
+                }
             });
             document.addEventListener('MSPointerMove', function(e) {
-                o._eventHandler(e.pointerId, 1, e.pageX, e.pageY, e);
+                if(!o.touchOnly || (e.pointerType == e.MSPOINTER_TYPE_TOUCH)) {
+                    o._eventHandler(e.pointerId, 1, e.pageX, e.pageY, e);
+                }
             });
             document.addEventListener('MSPointerUp', function(e) {
-                o._eventHandler(e.pointerId, 2, -1, -1, e);
+                if(!o.touchOnly || (e.pointerType == e.MSPOINTER_TYPE_TOUCH)) {
+                    o._eventHandler(e.pointerId, 2, -1, -1, e);
+                }
             });
         }
     };

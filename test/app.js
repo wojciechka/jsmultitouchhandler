@@ -1,4 +1,5 @@
 var mth = new multiTouchHandler();
+var isShown = [0,0,0,0,0,0,0,0,0,0];
 
 $(document).ready(function() {
     mth.initialize(); 
@@ -8,10 +9,20 @@ $(document).ready(function() {
             if (i < touches.length) {
                 var t = touches[i];
                 h = "@" + t.x + "," + t.y + " (" + t.id + ")";
+                $("#touch" + i).html(h);
+
+                $("#ts" + i).css({left: t.x, top: t.y});
+                if (!isShown[i]) {
+                    $("#ts" + i).show();
+                    isShown[i] = 1;
+                }
             }  else  {
-                h = "";
+                if (isShown[i]) {
+                    $("#touch" + i).html("");
+                    $("#ts" + i).hide();
+                    isShown[i] = 0;
+                }
             }
-            $("#touch" + i).html(h);
         }
     };
     mth.bind("start", f);

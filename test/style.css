@@ -17,9 +17,8 @@ body {
 }
 
 .freefloat {
-    background-color: #f00;
-    width: 9px;
-    height: 9px;
+    width: 19px;
+    height: 19px;
     position: absolute;
-    margin: -4 -4;
+    margin: -10 -10;
 }
